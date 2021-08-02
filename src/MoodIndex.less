@@ -1,0 +1,78 @@
+.mood-index-body {
+  margin: 20px 12px;
+  font-family: 'PingFangSC-Medium', 'Microsoft Yahei', sans-serif;
+
+
+  .profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    background: #FFFFFF;
+    box-shadow: 0px -6px 16px rgba(0, 0, 0, 0.15);
+    padding-top: 44px;
+  }
+
+  .user-portrait {
+    width: 42px;
+    height: 42px;
+    margin-right: 12px;
+    background-color: aqua;
+    border-radius: 50%;
+  }
+
+  .user-name {
+    color: #000;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .average-mood-index-count {
+    font-weight: 800;
+    font-size: 72px;
+    line-height: 98px;
+    text-align: center;
+  }
+
+  .average-mood-index-text {
+    font-size: 18px;
+    line-height: 25px;
+    text-align: center;
+    color: #929292;
+    letter-spacing: -0.3px;
+  }
+
+  .mood-index-bar-bg {
+    height: 340px;
+    position: relative;
+    margin-top: 34px;
+  }
+
+  .mood-index-level {
+    width: 100%;
+    height: 2px;
+    border: none;
+    margin: 0;
+    background: #F2F2F2;
+    position: absolute;
+
+    &[data-index="1"] {
+      top: 0;
+    }
+  
+    &[data-index="2"] {
+      top: 146px;
+    }
+  }
+
+  .mood-index-bar-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mood-index-bar {
+    width: 44px;
+  }
+}

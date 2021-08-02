@@ -1,8 +1,5 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
+import MoodIndex from './MoodIndex'
 
-const APP = () => {
-  return <h1>Hello World</h1>
-}
-
-ReactDOM.render(<APP />, document.getElementById('react-body-wrapper'))
+ReactDOM.render(<MoodIndex />, document.getElementById('react-body-wrapper'))
