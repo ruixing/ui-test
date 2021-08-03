@@ -18,7 +18,7 @@
     width: 42px;
     height: 42px;
     margin-right: 12px;
-    background-color: aqua;
+    background: url(./user-portrait.jpg) center / 100% no-repeat;
     border-radius: 50%;
   }
 
@@ -79,6 +79,19 @@
     position: relative;
     display: flex;
     justify-content: center;
+
+    &.min-index-bar {
+      .mood-index-bar-body.mood-normal {
+        background-image: linear-gradient(180deg, #42F373 42.71%, #A1FD44 100%);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+      }
+    }
+    &.max-index-bar {
+      .mood-index-bar-body.mood-happy {
+        background-image: linear-gradient(180deg, #FFA14A 35.42%, #FFCC4A 100%);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+    }
   }
 
   .mood-index-bar-body {
@@ -93,8 +106,9 @@
     border-radius: 7.25vw;
     overflow: hidden;
     opacity: 0;
-    transition-duration: 300ms, 50ms;
-    transition-property: height, opacity;
+    transition-duration: 300ms, 50ms, 180ms;
+    transition-property: height, opacity, background-image;
+    transform-origin: 50% 50%;
 
     &.bar-show {
       opacity: 1;
@@ -129,7 +143,7 @@
     }
 
     &.mood-happy {
-      background: #FF823C;
+      background-image: linear-gradient(180deg, #FF823C 100%, #FF823C 100%);
     }
     .happy-facial-icon {
       background: #FFDEC9;
@@ -173,7 +187,7 @@
     }
     
     &.mood-normal {
-      background: #52C873;
+      background-image: linear-gradient(180deg, #52C873 100%, #52C873 100%);
     }
     .normal-facial-icon {
       background: #D4F3D3;
@@ -228,16 +242,25 @@
     position: absolute;
     bottom: 0;
     opacity: 0;
+    border-radius: 22%;
     transition-duration: 200ms;
-    transition-property: opacity;
+    transition-property: opacity, box-shadow, transform;
+    transition-property: transform;
+    transform-origin: 50% 50%;
+    transform: scale(0);
+
+    &.last-day {
+      color: #FFF;
+      background: #2D2F33;
+    }
     
     &.mood-index-bar-day-show {
       opacity: 1;
+      transform: scale(1);
     }
 
     &.selected {
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      border-radius: 22%;
     }
   }
 }

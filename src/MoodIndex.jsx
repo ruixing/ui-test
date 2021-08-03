@@ -12,7 +12,6 @@ const Profile = () => {
 }
 
 const BarIcon = ({ type, show  }) => {
-
   switch (type) {
     case 'unknown': return (
       <div className={`bar-icon unknown-icon ${show ? 'bar-icon-show' : ''}`}>?</div>
@@ -38,9 +37,11 @@ const BarIcon = ({ type, show  }) => {
   return null;
 }
 
-const MoodBar = ({ index, day, average, delay  }) => {
+const MoodBar = ({ index, day, average, delay, isMin, isMax, isLast }) => {
   const [ height, setHeight ] = useState('10.6vw')
   const [ animeFlag, setAnimeFlag ] = useState(false)
+  const [ maxStrong, setMaxStrong ] = useState(false)
+  const [ minStrong, setMinStrong ] = useState(false)
 
   const moodClass = (() => {
     if (index > average) {
@@ -52,29 +53,56 @@ const MoodBar = ({ index, day, average, delay  }) => {
     }
   })()
 
-  // const height = index > 0 ? (index * 0.69).toFixed(2) + 'vw' : '21vw';
-
   useEffect(() => {
     setTimeout(() => {
       setAnimeFlag(true);
       setHeight(index > 0 ? (index * 0.69).toFixed(2) + 'vw' : '21vw');
     }, delay)
+    if (isMax) {
+      setTimeout(() => {
+        setMaxStrong(true)
+        setTimeout(() => setMaxStrong(false), 500)
+      }, 800)
+    }
+    if (isMin) {
+      setTimeout(() => {
+        setMinStrong(true)
+        setTimeout(() => setMinStrong(false), 500)
+      }, 1700)
+    }
   }, [])
 
   return (
-    <div className="mood-index-bar">
+    <div className={`mood-index-bar ${isMin && minStrong ? 'min-index-bar' : ''} ${isMax && maxStrong ? 'max-index-bar' : ''} `}>
       <div className={`mood-index-bar-body ${moodClass} ${animeFlag ? 'bar-show' : ''}`} style={{ height }}>
         { index > 0 && <div className={`bar-index ${animeFlag ? 'bar-index-show' : ''}`}>{index}</div> }
         { index < 1 && <BarIcon type="unknown" show={animeFlag} /> }
         { index >= average &&  <BarIcon type="happy" show={animeFlag} /> }
         { index < average && index > 0 && <BarIcon type="normal" show={animeFlag} /> }
       </div>
-      <div className={`mood-index-bar-day ${animeFlag ? 'mood-index-bar-day-show' : ''}`}>{day}</div>
+      <div className={
+        `mood-index-bar-day
+        ${animeFlag ? 'mood-index-bar-day-show' : ''}
+        ${isMin && minStrong ? 'selected' : ''}
+        ${isMax && maxStrong ? 'selected' : ''}
+        ${isLast ? 'last-day' : ''}
+        `}
+      >{day}</div>
     </div>
   )
 }
 
 const MoodIndexBars = ({ moodData, average }) => {
+  let minIndex = 100;
+  let maxIndex = 0;
+
+  moodData.forEach(({ index }) => {
+    if (index > 0) {
+      minIndex = Math.min(minIndex, index)
+    }
+    maxIndex = Math.max(maxIndex, index)
+  })
+
   return (
     <div className="mood-index-bar-bg">
       <hr className="mood-index-level" data-index="1" />
@@ -88,6 +116,9 @@ const MoodIndexBars = ({ moodData, average }) => {
               index={index}
               average={average}
               delay={idx * 50}
+              isMin={minIndex < maxIndex && index === minIndex}
+              isMax={index === maxIndex}
+              isLast={idx === moodData.length - 1}
             />
           ))
         }
