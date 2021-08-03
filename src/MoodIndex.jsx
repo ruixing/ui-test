@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './MoodIndex.less'
 
@@ -11,15 +11,15 @@ const Profile = () => {
   )
 }
 
-const BarIcon = ({ type  }) => {
+const BarIcon = ({ type, show  }) => {
 
   switch (type) {
     case 'unknown': return (
-      <div className="bar-icon unknown-icon">?</div>
+      <div className={`bar-icon unknown-icon ${show ? 'bar-icon-show' : ''}`}>?</div>
     )
 
     case 'normal': return (
-      <div className="bar-icon normal-facial-icon">
+      <div className={`bar-icon normal-facial-icon ${show ? 'bar-icon-show' : ''}`}>
         <div className="left-eye" />
         <div className="right-eye" />
         <div className="mouth" />
@@ -27,7 +27,7 @@ const BarIcon = ({ type  }) => {
     )
 
     case 'happy': return (
-      <div className="bar-icon happy-facial-icon">
+      <div className={`bar-icon happy-facial-icon ${show ? 'bar-icon-show' : ''}`}>
         <div className="left-eye" />
         <div className="right-eye" />
         <div className="mouth" />
@@ -38,7 +38,10 @@ const BarIcon = ({ type  }) => {
   return null;
 }
 
-const MoodBar = ({ index, day, average  }) => {
+const MoodBar = ({ index, day, average, delay  }) => {
+  const [ height, setHeight ] = useState('10.6vw')
+  const [ animeFlag, setAnimeFlag ] = useState(false)
+
   const moodClass = (() => {
     if (index > average) {
       return 'mood-happy';
@@ -49,17 +52,24 @@ const MoodBar = ({ index, day, average  }) => {
     }
   })()
 
-  const height = index > 0 ? (index * 0.715).toFixed(2) + 'vw' : '21vw';
+  // const height = index > 0 ? (index * 0.69).toFixed(2) + 'vw' : '21vw';
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimeFlag(true);
+      setHeight(index > 0 ? (index * 0.69).toFixed(2) + 'vw' : '21vw');
+    }, delay)
+  }, [])
 
   return (
     <div className="mood-index-bar">
-      <div className={`mood-index-bar-body ${moodClass}`} style={{ height }}>
-        { index > 0 && <div>{index}</div> }
-        { index < 1 && <BarIcon type="unknown" /> }
-        { index >= average &&  <BarIcon type="happy" /> }
-        { index < average && index > 0 && <BarIcon type="normal" /> }
+      <div className={`mood-index-bar-body ${moodClass} ${animeFlag ? 'bar-show' : ''}`} style={{ height }}>
+        { index > 0 && <div className={`bar-index ${animeFlag ? 'bar-index-show' : ''}`}>{index}</div> }
+        { index < 1 && <BarIcon type="unknown" show={animeFlag} /> }
+        { index >= average &&  <BarIcon type="happy" show={animeFlag} /> }
+        { index < average && index > 0 && <BarIcon type="normal" show={animeFlag} /> }
       </div>
-      <div className="mood-index-bar-day">{day}</div>
+      <div className={`mood-index-bar-day ${animeFlag ? 'mood-index-bar-day-show' : ''}`}>{day}</div>
     </div>
   )
 }
@@ -71,12 +81,13 @@ const MoodIndexBars = ({ moodData, average }) => {
       <hr className="mood-index-level" data-index="2" />
       <div className="mood-index-bar-wrapper">
         {
-          moodData.map(({ day, index }) => (
+          moodData.map(({ day, index }, idx) => (
             <MoodBar
               key={day}
               day={day}
               index={index}
               average={average}
+              delay={idx * 50}
             />
           ))
         }
