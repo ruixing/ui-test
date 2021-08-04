@@ -80,15 +80,16 @@
     display: flex;
     justify-content: center;
 
-    &.min-index-bar {
+    &.selected-index-bar {
       .mood-index-bar-body.mood-normal {
         background-image: linear-gradient(180deg, #42F373 42.71%, #A1FD44 100%);
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
       }
-    }
-    &.max-index-bar {
       .mood-index-bar-body.mood-happy {
         background-image: linear-gradient(180deg, #FFA14A 35.42%, #FFCC4A 100%);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .mood-index-bar-body.mood-unknown {
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
       }
     }
@@ -259,7 +260,7 @@
       transform: scale(1);
     }
 
-    &.selected {
+    &.selected-bar-day {
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
   }
